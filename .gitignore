@@ -1,11 +1,12 @@
 # In repository we don't need to have:
 # Compiled object files
 *.o
+*.obj
 
 # Generated MOC, resource and UI files
-moc_*.cpp
-qrc_*.cpp
-ui_*.h
+#moc_*.cpp
+#qrc_*.cpp
+#ui_*.h
 *.Debug
 *.Release
 Makefile
