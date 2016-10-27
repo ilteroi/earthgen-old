@@ -30,6 +30,8 @@ void set_colours (Planet_colours& c, const Planet& p, const Season* s, int mode)
 			colour_wind(c, p, *s);
 		else if (mode == c.XYZ)
 			colour_xyz(c, p, *s);
+		else if (mode == c.INDEX)
+			colour_index(c, p, *s);
 	}
 	set_colours(c, p, mode);
 }
@@ -134,7 +136,7 @@ void colour_temperature (Planet_colours& c, const Planet& p, const Season& s) {
 }
 
 void colour_aridity (Planet_colours& c, const Planet& p, const Season& s) {
-	static const Colour water = Colour(1.0, 1.0, 1.0);
+	static const Colour water = Colour(0.4, 0.4, 0.4);
 
 	static const Colour col[4] = {
 		Colour(1.0, 0.0, 0.0),
@@ -162,7 +164,7 @@ void colour_aridity (Planet_colours& c, const Planet& p, const Season& s) {
 }
 
 void colour_humidity (Planet_colours& c, const Planet& p, const Season& s) {
-	static const Colour water = Colour(1.0, 1.0, 1.0);
+	static const Colour water = Colour(0.4, 0.4, 0.4);
 	static const Colour land_dry = Colour(1.0, 1.0, 0.5);
 	static const Colour land_mid = Colour(1.0, 1.0, 0.0);
 	static const Colour land_humid = Colour(0.0, 0.7, 0.0);
@@ -186,7 +188,7 @@ void colour_humidity (Planet_colours& c, const Planet& p, const Season& s) {
 }
 
 void colour_precipitation (Planet_colours& c, const Planet& p, const Season& s) {
-	static const Colour water = Colour(1.0, 1.0, 1.0);
+	static const Colour water = Colour(0.4, 0.4, 0.4);
 	static const Colour dry = Colour(1.0, 1.0, 0.5);
 	static const Colour medium = Colour(0.0, 1.0, 0.0);
 	static const Colour wet = Colour(0.0, 0.0, 1.0);
@@ -228,5 +230,13 @@ void colour_wind (Planet_colours& c, const Planet& p, const Season& s) {
 void colour_xyz (Planet_colours& c, const Planet& p, const Season& s) {
 	for (const Tile& t : tiles(p)) {
 		c.tiles[id(t)] = Colour( t.v.x/2 + 0.5f, t.v.y/2 + 0.5f, t.v.z/2 + 0.5f );
+	}
+}
+
+void colour_index (Planet_colours& c, const Planet& p, const Season& s) {
+	for (const Tile& t : tiles(p)) {
+		//let's have 120 colors, repeating
+		int idx = (t.id % 120);
+		c.tiles[id(t)] = hsv( (idx*2*pi)/120, 1, (idx%2==0)? 1 : 0.8f );
 	}
 }

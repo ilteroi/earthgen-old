@@ -4,13 +4,28 @@
 #include <iostream>
 using std::cout;
 
+void create_lookup(Grid* grid)
+{
+	if (!grid)
+		return;
+
+	for (auto& t : grid->tiles) {
+		grid->tile_lookup[ t.v ] = t.id;
+	}
+}
+
 Grid* size_n_grid (int size) {
+	Grid* result = nullptr;
+
 	if (size == 0) {
-		return size_0_grid();
+		result = size_0_grid();
 	}
 	else {
-		return _subdivided_grid(size_n_grid(size-1));
+		result = _subdivided_grid(size_n_grid(size-1));
 	}
+
+	create_lookup(result);
+	return result;
 }
 
 Grid* size_0_grid () {
@@ -18,6 +33,7 @@ Grid* size_0_grid () {
 	float x = -0.525731112119133606f;
 	float z = -0.850650808352039932f;
 	
+	//shouldn't this be a dodecahedron?
 	Vector3 icos_tiles[12] = {
 		Vector3(-x, 0, z), Vector3(x, 0, z), Vector3(-x, 0, -z), Vector3(x, 0, -z),
 		Vector3(0, z, x), Vector3(0, z, -x), Vector3(0, -z, x), Vector3(0, -z, -x),

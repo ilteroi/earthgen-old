@@ -5,6 +5,7 @@
 #include "../math/vector2.h"
 #include "../math/vector3.h"
 #include "colour.h"
+
 class Planet;
 class Quaternion;
 

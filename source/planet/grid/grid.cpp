@@ -20,6 +20,27 @@ const std::deque<Tile>& tiles (const Planet& p) {return p.grid->tiles;}
 const std::deque<Corner>& corners (const Planet& p) {return p.grid->corners;}
 const std::deque<Edge>& edges (const Planet& p) {return p.grid->edges;}
 
+const Tile* closest_tile(const Planet& p, const Vector3& v) {
+	/*
+	TileLookup::const_iterator it = p.grid->tile_lookup.find(v);
+	if ( it != p.grid->tile_lookup.end() )
+		return &p.grid->tiles[ it->second ];
+	return nullptr;
+	*/
+
+	float min_dist = 1e8;
+	const Tile* result = nullptr;
+	for (auto& t : p.grid->tiles) {
+		float dist = distance(v,t.v);
+		if (dist < min_dist)
+		{
+			min_dist = dist;
+			result = &t;
+		}
+	}
+
+	return result;
+}
 const Tile* nth_tile (const Planet& p, int n) {return &p.grid->tiles[n];}
 const Corner* nth_corner (const Planet& p, int n) {return &p.grid->corners[n];}
 const Edge* nth_edge (const Planet& p, int n) {return &p.grid->edges[n];}

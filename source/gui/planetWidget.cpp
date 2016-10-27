@@ -55,12 +55,16 @@ void PlanetWidget::wheelEvent (QWheelEvent* event) {
 
 void PlanetWidget::mousePressEvent (QMouseEvent*) {
 	getMousePosition();
-//	QPoint p = QPoint(1,2) - QPoint(10,10);
 }
 
 void PlanetWidget::mouseReleaseEvent (QMouseEvent*) {
 	if (!mouseMoving) {
-		pointSelected(conjugate(rotation_to_default(planetHandler->planet())) * activeRenderer->to_coordinates(vector(mousePosition)));
+		Vector3 vec3 = conjugate(rotation_to_default(planetHandler->planet())) * activeRenderer->to_coordinates(vector(mousePosition));
+		pointSelected(vec3);
+
+		const Tile* t = closest_tile(planetHandler->planet(),vec3);
+		if (t)
+			std::cout << "Selected tile " << t->id << " at " << t->v << std::endl;
 	}
 	mouseMoving = false;
 }
