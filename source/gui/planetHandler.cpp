@@ -34,6 +34,8 @@ void PlanetHandler::generateTerrain (const Terrain_parameters& par) {
 	generate_terrain(_planet, par);
 	terrainCreated();
 	axisChanged();
+
+	std::cout << "Generated map with " << _planet.grid->tiles.size() << " tiles" << std::endl;
 }
 
 void PlanetHandler::generateClimate (const Climate_parameters& par) {

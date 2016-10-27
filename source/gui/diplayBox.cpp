@@ -94,6 +94,8 @@ void DisplayBox::enableClimate () {
 		colourBox->insertItem(3, "Aridity");
 		colourBox->insertItem(4, "Humidity");
 		colourBox->insertItem(5, "Precipitation");
+		colourBox->insertItem(6, "Wind");
+		colourBox->insertItem(7, "xyz");
 		colourBox->setCurrentIndex(1);
 	}
 	climateEnabled = true;

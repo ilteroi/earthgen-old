@@ -22,5 +22,5 @@ public:
 };
 
 Colour interpolate (const Colour&, const Colour&, double);
-
+Colour hsv(float H /*rad*/, float S, float V);
 #endif

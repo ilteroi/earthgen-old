@@ -22,9 +22,11 @@ void copy_season (const Climate_generation_season& from, Season& to) {
 		to.tiles[i].temperature = from.tiles[i].temperature;
 		to.tiles[i].humidity = from.tiles[i].humidity;
 		to.tiles[i].precipitation = from.tiles[i].precipitation;
+		to.tiles[i].wind = from.tiles[i].wind;
 	}
 	for (unsigned i=0; i<from.edges.size(); i++) {
 		to.edges[i].wind_velocity = from.edges[i].wind_velocity;
+		to.edges[i].river_flow = from.edges[i].river_flow;
 	}
 }
 
@@ -53,7 +55,7 @@ void generate_season (Planet& planet, const Climate_parameters& par, float time_
 
 void _set_temperature (const Planet& planet, const Climate_parameters&, Climate_generation_season& season) {
 	auto temperature_at_latitude = [](float latitude) {
-		return freezing_point() - 25 + 50*cos(latitude);
+		return freezing_point() - 20 + 50*cos(latitude);
 	};
 	
 	for (auto& t : tiles(planet)) {
@@ -97,16 +99,16 @@ Wind _prevailing_wind (Vector2 pressure_gradient_force, double coriolis_coeffici
 }
 
 Wind _default_wind (const Planet& p, int i, double tropical_equator) {
+	//include elevation or elevation difference?
 	Vector2 pressure_force = _default_pressure_gradient_force(tropical_equator, latitude(p, vector(nth_tile(p,i))));
 	double coriolis_coeff = coriolis_coefficient(p, latitude(p, vector(nth_tile(p,i))));
-	double friction = is_land(nth_tile(terrain(p), i)) ? 0.000045 : 0.000045;
+	double friction = is_land(nth_tile(terrain(p), i)) ? 0.000060 : 0.000045;
 	return _prevailing_wind(pressure_force, coriolis_coeff, friction);
 }
 
 void _set_wind (const Planet& planet, const Climate_parameters&, Climate_generation_season& season) {
 	for (auto& t : tiles(planet)) {
 		season.tiles[id(t)].wind = _default_wind(planet, id(t), season.tropical_equator);
-		season.tiles[id(t)].wind.direction += north(planet, &t);
 	}
 	for (auto& t : tiles(planet)) {
 		//tile shape in 2d, rotated according to wind direction

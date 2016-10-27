@@ -12,7 +12,7 @@ public:
 
 	std::deque<Colour> tiles;
 
-	enum {TOPOGRAPHY, VEGETATION, TEMPERATURE, ARIDITY, HUMIDITY, PRECIPITATION};
+	enum {TOPOGRAPHY, VEGETATION, TEMPERATURE, ARIDITY, HUMIDITY, PRECIPITATION, WIND, XYZ};
 };
 
 void clear_colours (Planet_colours&);
@@ -25,5 +25,7 @@ void colour_temperature (Planet_colours&, const Planet&, const Season&);
 void colour_aridity (Planet_colours&, const Planet&, const Season&);
 void colour_humidity (Planet_colours&, const Planet&, const Season&);
 void colour_precipitation (Planet_colours&, const Planet&, const Season&);
+void colour_wind (Planet_colours&, const Planet&, const Season&);
+void colour_xyz (Planet_colours&, const Planet&, const Season&);
 
 #endif

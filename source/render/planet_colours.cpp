@@ -26,6 +26,10 @@ void set_colours (Planet_colours& c, const Planet& p, const Season* s, int mode)
 			colour_humidity(c, p, *s);
 		else if (mode == c.PRECIPITATION)
 			colour_precipitation(c, p, *s);
+		else if (mode == c.WIND)
+			colour_wind(c, p, *s);
+		else if (mode == c.XYZ)
+			colour_xyz(c, p, *s);
 	}
 	set_colours(c, p, mode);
 }
@@ -81,14 +85,14 @@ void colour_vegetation (Planet_colours& c, const Planet& p, const Season& s) {
 	static const Colour vegetation = Colour(0.176, 0.32, 0.05);
 
 	for (const Tile& t : tiles(p)) {
-		if (is_water(nth_tile(terrain(p) ,id(t)))) {
-			double d = std::min(1.0f, water_depth(nth_tile(terrain(p), id(t)))/400);
-			c.tiles[id(t)] = interpolate(water_shallow, water_deep, d);
-		}
+		auto& climate = nth_tile(s, id(t));
+		if (temperature(climate) <= freezing_point())
+			c.tiles[id(t)] = snow;
 		else {
-			auto& climate = nth_tile(s, id(t));
-			if (temperature(climate) <= freezing_point())
-				c.tiles[id(t)] = snow;
+			if (is_water(nth_tile(terrain(p) ,id(t)))) {
+				double d = std::min(1.0f, water_depth(nth_tile(terrain(p), id(t)))/400);
+				c.tiles[id(t)] = interpolate(water_shallow, water_deep, d);
+			}
 			else {
 				double d = std::min(1.0, (elevation(nth_tile(terrain(p), id(t))) - sea_level(p))/2500);
 				Colour ground = interpolate(land_low, land_high, d);
@@ -203,5 +207,26 @@ void colour_precipitation (Planet_colours& c, const Planet& p, const Season& s) 
 				c.tiles[id(t)] = interpolate(medium, wet, d);
 			}
 		}
+	}
+}
+
+void colour_wind (Planet_colours& c, const Planet& p, const Season& s) {
+	float max_speed = 0;
+	for (const Climate_tile& t : s.tiles) {
+		max_speed = std::max(max_speed,t.wind.speed);
+	}
+	//just faster
+	max_speed = 1/max_speed;
+
+	for (const Tile& t : tiles(p)) {
+		float speed = s.tiles[id(t)].wind.speed;
+		float direction = s.tiles[id(t)].wind.direction;
+		c.tiles[id(t)] = hsv(direction, 1, speed * max_speed);
+	}
+}
+
+void colour_xyz (Planet_colours& c, const Planet& p, const Season& s) {
+	for (const Tile& t : tiles(p)) {
+		c.tiles[id(t)] = Colour( t.v.x/2 + 0.5f, t.v.y/2 + 0.5f, t.v.z/2 + 0.5f );
 	}
 }
