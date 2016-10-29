@@ -15,7 +15,7 @@ public:
 	int id;
 	int edge_count;
 	Vector3 v;
-	std::vector<const Tile*> tiles;
+	std::vector<const Tile*> neighbours;
 	std::vector<const Corner*> corners;
 	std::vector<const Edge*> edges;
 };
@@ -23,7 +23,7 @@ public:
 int id (const Tile&);
 int edge_count (const Tile&);
 const Vector3& vector (const Tile&);
-const std::vector<const Tile*>& tiles (const Tile&);
+const std::vector<const Tile*>& neighbours (const Tile&);
 const std::vector<const Corner*>& corners (const Tile&);
 const std::vector<const Edge*>& edges (const Tile&);
 const Tile* nth_tile (const Tile&, int);
@@ -40,7 +40,7 @@ std::vector<Vector2> polygon (const Tile*, Quaternion);
 inline int id (const Tile* t) {return id(*t);}
 inline int edge_count (const Tile* t) {return edge_count(*t);}
 inline const Vector3& vector (const Tile* t) {return vector(*t);}
-inline const std::vector<const Tile*>& tiles (const Tile* t) {return tiles(*t);}
+inline const std::vector<const Tile*>& tiles (const Tile* t) {return neighbours(*t);}
 inline const std::vector<const Corner*>& corners (const Tile* t) {return corners(*t);}
 inline const std::vector<const Edge*>& edges (const Tile* t) {return edges(*t);}
 inline const Tile* nth_tile (const Tile* t, int n) {return nth_tile(*t, n);}

@@ -1,7 +1,7 @@
 #ifndef display_box_h
 #define display_box_h
 
-#include <QGroupBox>
+#include <QtWidgets\QGroupBox>
 class QGridLayout;
 class QPushButton;
 class QComboBox;

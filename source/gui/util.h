@@ -1,7 +1,7 @@
 #ifndef util_h
 #define util_h
 
-#include <QString>
+#include <QtCore\qstring.h>
 #include "../math/vector3.h"
 
 QString randomAlpha (int length);

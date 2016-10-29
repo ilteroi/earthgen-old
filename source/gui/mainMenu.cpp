@@ -1,5 +1,5 @@
 #include "mainMenu.h"
-#include <QBoxLayout>
+#include <QtWidgets\QBoxLayout>
 #include "terrainBox.h"
 #include "axisBox.h"
 #include "climateBox.h"

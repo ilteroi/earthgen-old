@@ -1,7 +1,7 @@
 #ifndef planet_handler_h
 #define planet_handler_h
 
-#include <QObject>
+#include <QtCore\QObject>
 #include "../math/vector3.h"
 #include "../planet/planet.h"
 #include "../planet/terrain/terrain_generation.h"

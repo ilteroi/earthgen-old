@@ -4,20 +4,36 @@
 #include <iostream>
 using std::cout;
 
+void create_lookup(Grid* grid)
+{
+	if (!grid)
+		return;
+
+	for (auto& t : grid->tiles) {
+		grid->tile_lookup[ t.v ] = t.id;
+	}
+}
+
 Grid* size_n_grid (int size) {
+	Grid* result = nullptr;
+
 	if (size == 0) {
-		return size_0_grid();
+		result = size_0_grid();
 	}
 	else {
-		return _subdivided_grid(size_n_grid(size-1));
+		result = _subdivided_grid(size_n_grid(size-1));
 	}
+
+	create_lookup(result);
+	return result;
 }
 
 Grid* size_0_grid () {
 	Grid* grid = new Grid(0);
-	float x = -0.525731112119133606;
-	float z = -0.850650808352039932;
+	float x = -0.525731112119133606f;
+	float z = -0.850650808352039932f;
 	
+	//shouldn't this be a dodecahedron?
 	Vector3 icos_tiles[12] = {
 		Vector3(-x, 0, z), Vector3(x, 0, z), Vector3(-x, 0, -z), Vector3(x, 0, -z),
 		Vector3(0, z, x), Vector3(0, z, -x), Vector3(0, -z, x), Vector3(0, -z, -x),
@@ -33,7 +49,7 @@ Grid* size_0_grid () {
 	for (Tile& t : grid->tiles) {
 		t.v = icos_tiles[t.id];
 		for (int k=0; k<5; k++) {
-			t.tiles[k] = &grid->tiles[icos_tiles_n[t.id][k]];
+			t.neighbours[k] = &grid->tiles[icos_tiles_n[t.id][k]];
 		}
 	}
 	for (int i=0; i<5; i++) {
@@ -82,15 +98,15 @@ Grid* _subdivided_grid (Grid* prev) {
 	for (int i=0; i<prev_tile_count; i++) {
 		grid->tiles[i].v = prev->tiles[i].v;
 		for (int k=0; k<grid->tiles[i].edge_count; k++) {
-			grid->tiles[i].tiles[k] = &grid->tiles[prev->tiles[i].corners[k]->id+prev_tile_count];
+			grid->tiles[i].neighbours[k] = &grid->tiles[prev->tiles[i].corners[k]->id+prev_tile_count];
 		}
 	}
 	//old corners become tiles
 	for (int i=0; i<prev_corner_count; i++) {
 		grid->tiles[i+prev_tile_count].v = prev->corners[i].v;
 		for (int k=0; k<3; k++) {
-			grid->tiles[i+prev_tile_count].tiles[2*k] = &grid->tiles[prev->corners[i].corners[k]->id+prev_tile_count];
-			grid->tiles[i+prev_tile_count].tiles[2*k+1] = &grid->tiles[prev->corners[i].tiles[k]->id];
+			grid->tiles[i+prev_tile_count].neighbours[2*k] = &grid->tiles[prev->corners[i].corners[k]->id+prev_tile_count];
+			grid->tiles[i+prev_tile_count].neighbours[2*k+1] = &grid->tiles[prev->corners[i].tiles[k]->id];
 		}
 	}
 	//new corners
@@ -98,7 +114,7 @@ Grid* _subdivided_grid (Grid* prev) {
 	for (const Tile& n : prev->tiles) {
 		const Tile& t = grid->tiles[n.id];
 		for (int k=0; k<t.edge_count; k++) {
-			_add_corner(next_corner_id, grid, t.id, t.tiles[(k+t.edge_count-1)%t.edge_count]->id, t.tiles[k]->id);
+			_add_corner(next_corner_id, grid, t.id, t.neighbours[(k+t.edge_count-1)%t.edge_count]->id, t.neighbours[k]->id);
 			next_corner_id++;
 		}
 	}
@@ -113,7 +129,7 @@ Grid* _subdivided_grid (Grid* prev) {
 	for (Tile& t : grid->tiles) {
 		for (int k=0; k<t.edge_count; k++) {
 			if (t.edges[k] == nullptr) {
-				_add_edge(next_edge_id, grid, t.id, t.tiles[k]->id);
+				_add_edge(next_edge_id, grid, t.id, t.neighbours[k]->id);
 				next_edge_id++;
 			}
 		}

@@ -26,6 +26,12 @@ void set_colours (Planet_colours& c, const Planet& p, const Season* s, int mode)
 			colour_humidity(c, p, *s);
 		else if (mode == c.PRECIPITATION)
 			colour_precipitation(c, p, *s);
+		else if (mode == c.WIND)
+			colour_wind(c, p, *s);
+		else if (mode == c.XYZ)
+			colour_xyz(c, p, *s);
+		else if (mode == c.INDEX)
+			colour_index(c, p, *s);
 	}
 	set_colours(c, p, mode);
 }
@@ -81,14 +87,14 @@ void colour_vegetation (Planet_colours& c, const Planet& p, const Season& s) {
 	static const Colour vegetation = Colour(0.176, 0.32, 0.05);
 
 	for (const Tile& t : tiles(p)) {
-		if (is_water(nth_tile(terrain(p) ,id(t)))) {
-			double d = std::min(1.0f, water_depth(nth_tile(terrain(p), id(t)))/400);
-			c.tiles[id(t)] = interpolate(water_shallow, water_deep, d);
-		}
+		auto& climate = nth_tile(s, id(t));
+		if (temperature(climate) <= freezing_point())
+			c.tiles[id(t)] = snow;
 		else {
-			auto& climate = nth_tile(s, id(t));
-			if (temperature(climate) <= freezing_point())
-				c.tiles[id(t)] = snow;
+			if (is_water(nth_tile(terrain(p) ,id(t)))) {
+				double d = std::min(1.0f, water_depth(nth_tile(terrain(p), id(t)))/400);
+				c.tiles[id(t)] = interpolate(water_shallow, water_deep, d);
+			}
 			else {
 				double d = std::min(1.0, (elevation(nth_tile(terrain(p), id(t))) - sea_level(p))/2500);
 				Colour ground = interpolate(land_low, land_high, d);
@@ -130,7 +136,7 @@ void colour_temperature (Planet_colours& c, const Planet& p, const Season& s) {
 }
 
 void colour_aridity (Planet_colours& c, const Planet& p, const Season& s) {
-	static const Colour water = Colour(1.0, 1.0, 1.0);
+	static const Colour water = Colour(0.4, 0.4, 0.4);
 
 	static const Colour col[4] = {
 		Colour(1.0, 0.0, 0.0),
@@ -158,7 +164,7 @@ void colour_aridity (Planet_colours& c, const Planet& p, const Season& s) {
 }
 
 void colour_humidity (Planet_colours& c, const Planet& p, const Season& s) {
-	static const Colour water = Colour(1.0, 1.0, 1.0);
+	static const Colour water = Colour(0.4, 0.4, 0.4);
 	static const Colour land_dry = Colour(1.0, 1.0, 0.5);
 	static const Colour land_mid = Colour(1.0, 1.0, 0.0);
 	static const Colour land_humid = Colour(0.0, 0.7, 0.0);
@@ -182,7 +188,7 @@ void colour_humidity (Planet_colours& c, const Planet& p, const Season& s) {
 }
 
 void colour_precipitation (Planet_colours& c, const Planet& p, const Season& s) {
-	static const Colour water = Colour(1.0, 1.0, 1.0);
+	static const Colour water = Colour(0.4, 0.4, 0.4);
 	static const Colour dry = Colour(1.0, 1.0, 0.5);
 	static const Colour medium = Colour(0.0, 1.0, 0.0);
 	static const Colour wet = Colour(0.0, 0.0, 1.0);
@@ -203,5 +209,34 @@ void colour_precipitation (Planet_colours& c, const Planet& p, const Season& s) 
 				c.tiles[id(t)] = interpolate(medium, wet, d);
 			}
 		}
+	}
+}
+
+void colour_wind (Planet_colours& c, const Planet& p, const Season& s) {
+	float max_speed = 0;
+	for (const Climate_tile& t : s.tiles) {
+		max_speed = std::max(max_speed,t.wind.speed);
+	}
+	//just faster
+	max_speed = 1/max_speed;
+
+	for (const Tile& t : tiles(p)) {
+		float speed = s.tiles[id(t)].wind.speed;
+		float direction = s.tiles[id(t)].wind.direction;
+		c.tiles[id(t)] = hsv(direction, 1, speed * max_speed);
+	}
+}
+
+void colour_xyz (Planet_colours& c, const Planet& p, const Season& s) {
+	for (const Tile& t : tiles(p)) {
+		c.tiles[id(t)] = Colour( t.v.x/2 + 0.5f, t.v.y/2 + 0.5f, t.v.z/2 + 0.5f );
+	}
+}
+
+void colour_index (Planet_colours& c, const Planet& p, const Season& s) {
+	for (const Tile& t : tiles(p)) {
+		//let's have 120 colors, repeating
+		int idx = (t.id % 120);
+		c.tiles[id(t)] = hsv( (idx*2*pi)/120, 1, (idx%2==0)? 1 : 0.8f );
 	}
 }

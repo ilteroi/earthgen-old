@@ -1,7 +1,7 @@
 #include "axisBox.h"
-#include <QFormLayout>
-#include <QLineEdit>
-#include <QPushButton>
+#include <QtWidgets\QFormLayout>
+#include <QtWidgets\QLineEdit>
+#include <QtWidgets\QPushButton>
 #include "planetHandler.h"
 #include "planetWidget.h"
 #include "util.h"

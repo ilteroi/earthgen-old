@@ -1,7 +1,7 @@
 #ifndef climate_box_h
 #define climate_box_h
 
-#include <QGroupBox>
+#include <QtWidgets\QGroupBox>
 class QPushButton;
 class QFormLayout;
 class QLineEdit;

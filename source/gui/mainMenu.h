@@ -1,7 +1,7 @@
 #ifndef main_menu_h
 #define main_menu_h
 
-#include <QWidget>
+#include <QtWidgets\QWidget>
 class QBoxLayout;
 class TerrainBox;
 class AxisBox;

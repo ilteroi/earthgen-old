@@ -1,10 +1,10 @@
 #include "displayBox.h"
 
-#include <QGridLayout>
-#include <QPushButton>
-#include <QComboBox>
-#include <QLineEdit>
-#include <QLabel>
+#include <QtWidgets\QGridLayout>
+#include <QtWidgets\QPushButton>
+#include <QtWidgets\QComboBox>
+#include <QtWidgets\QLineEdit>
+#include <QtWidgets\QLabel>
 #include "planetHandler.h"
 #include "planetWidget.h"
 #include "../render/planet_colours.h"
@@ -94,6 +94,9 @@ void DisplayBox::enableClimate () {
 		colourBox->insertItem(3, "Aridity");
 		colourBox->insertItem(4, "Humidity");
 		colourBox->insertItem(5, "Precipitation");
+		colourBox->insertItem(6, "Wind");
+		colourBox->insertItem(7, "xyz");
+		colourBox->insertItem(8, "index");
 		colourBox->setCurrentIndex(1);
 	}
 	climateEnabled = true;

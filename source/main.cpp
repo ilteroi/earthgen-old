@@ -1,6 +1,6 @@
 #include <iostream>
-#include <QApplication>
-#include <QIcon>
+#include <QtWidgets\QApplication>
+#include <QtGui\QIcon>
 #include "gui/mainWindow.h"
 
 int main (int argv, char **args) {

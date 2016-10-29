@@ -1,10 +1,11 @@
 #ifndef planet_renderer_h
 #define planet_renderer_h
 
-#include <QGLWidget>
+#include <QtOpenGL\QGLWidget>
 #include "../math/vector2.h"
 #include "../math/vector3.h"
 #include "colour.h"
+
 class Planet;
 class Quaternion;
 

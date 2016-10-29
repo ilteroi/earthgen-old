@@ -1,7 +1,7 @@
 #include "climateBox.h"
-#include <QPushButton>
-#include <QFormLayout>
-#include <QLineEdit>
+#include <QtWidgets\QPushButton>
+#include <QtWidgets\QFormLayout>
+#include <QtWidgets\QLineEdit>
 #include "planetHandler.h"
 
 ClimateBox::ClimateBox (PlanetHandler* p) : QGroupBox(QString("Climate")), planetHandler(p) {

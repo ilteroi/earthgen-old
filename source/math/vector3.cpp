@@ -1,5 +1,7 @@
 #include "vector3.h"
 #include <cmath>
+#include <functional>
+#include <iomanip>
 
 Vector3::Vector3 () :
 	x (0), y (0), z (0) {}
@@ -70,4 +72,26 @@ double squared_distance (const Vector3& v, const Vector3& u) {
 
 double angle (const Vector3& v, const Vector3& u) {
 	return acos(dot_product(v,u) / (length(v) * length(u)));
+}
+
+std::ostream & operator<<(std::ostream & os, const Vector3 & v)
+{
+	os << std::fixed << std::setw(2) << std::setprecision(3) << "(" << v.x << "," << v.y << "," << v.z << ")";
+	return os;
+}
+
+template <class T>
+inline void hash_combine(std::size_t & seed, const T & v)
+{
+  std::hash<T> hasher;
+  seed ^= hasher(v) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+}
+
+std::size_t Vec3Hasher::operator()(const Vector3& k) const
+{
+	size_t h = 0;
+	hash_combine(h,k.x);
+	hash_combine(h,k.y);
+	hash_combine(h,k.z);
+	return h;
 }

@@ -1,8 +1,8 @@
 #ifndef main_window_h
 #define main_window_h
 
-#include <QWidget>
-#include <QGridLayout>
+#include <QtWidgets\QWidget>
+#include <QtWidgets\QGridLayout>
 #include "mainMenu.h"
 #include "planetWidget.h"
 #include "planetHandler.h"

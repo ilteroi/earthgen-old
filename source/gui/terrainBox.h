@@ -1,7 +1,7 @@
 #ifndef terrain_box_h
 #define terrain_box_h
 
-#include <QGroupBox>
+#include <QtWidgets\QGroupBox>
 #include "../math/vector3.h"
 
 class QFormLayout;

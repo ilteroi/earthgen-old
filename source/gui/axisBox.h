@@ -1,7 +1,7 @@
 #ifndef axis_box_h
 #define axis_box_h
 
-#include <QGroupBox>
+#include <QtWidgets\QGroupBox>
 #include "../math/vector3.h"
 class QFormLayout;
 class QLineEdit;
