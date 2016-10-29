@@ -61,6 +61,11 @@ void Globe_renderer::draw (const Planet& planet, const Quaternion& q, const Plan
 		draw_tile(&t, m, colours.tiles[id(t)]);
 	}
 
+	//simply redraw the (few) highlighted tiles
+	for (auto& i : colours.highlight) {
+		draw_tile(nth_tile(planet,i), m, Colour(1,0,1));
+	}
+
 	if (show_rivers)
 		for (auto& t : tiles(planet))
 			if (is_land(nth_tile(terrain(planet), id(t)))) {

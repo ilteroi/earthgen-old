@@ -126,6 +126,7 @@
     <ClCompile Include="source\moc\moc_planetHandler.cpp" />
     <ClCompile Include="source\moc\moc_planetWidget.cpp" />
     <ClCompile Include="source\moc\moc_terrainBox.cpp" />
+    <ClCompile Include="source\path\pathfinder.cpp" />
     <ClCompile Include="source\planet\climate\climate.cpp" />
     <ClCompile Include="source\planet\climate\climate_corner.cpp" />
     <ClCompile Include="source\planet\climate\climate_edge.cpp" />
@@ -171,6 +172,7 @@
     <ClInclude Include="source\math\quaternion.h" />
     <ClInclude Include="source\math\vector2.h" />
     <ClInclude Include="source\math\vector3.h" />
+    <ClInclude Include="source\path\pathfinder.h" />
     <ClInclude Include="source\planet\climate\climate.h" />
     <ClInclude Include="source\planet\climate\climate_corner.h" />
     <ClInclude Include="source\planet\climate\climate_edge.h" />

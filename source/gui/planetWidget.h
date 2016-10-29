@@ -26,7 +26,7 @@ protected:
 	void mousePressEvent (QMouseEvent*);
 	void mouseReleaseEvent (QMouseEvent*);
 	void mouseMoveEvent (QMouseEvent*);
-	void getMousePosition ();
+	QPoint getMousePosition ();
 private:
 	Vector2 relativePosition (const QPointF&);
 	Vector2 vector (const QPoint&) const;
@@ -40,7 +40,7 @@ signals:
 	void pointSelected (Vector3);
 public:
 	bool mouseMoving;
-	QPoint mousePosition;
+	QPoint lastMousePosition;
 	PlanetHandler* planetHandler;
 	Planet_renderer* activeRenderer;
 	Globe_renderer* globeRenderer;

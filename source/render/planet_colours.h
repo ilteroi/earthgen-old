@@ -11,6 +11,7 @@ public:
 	Planet_colours () {}
 
 	std::deque<Colour> tiles;
+	std::deque<int> highlight;
 
 	enum {TOPOGRAPHY, VEGETATION, TEMPERATURE, ARIDITY, HUMIDITY, PRECIPITATION, WIND, XYZ, INDEX};
 };
